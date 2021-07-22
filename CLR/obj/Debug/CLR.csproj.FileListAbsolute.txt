@@ -7,3 +7,12 @@ C:\Users\data\RiderProjects\CLR\CLR\obj\Debug\CLR.pdb
 C:\Users\data\RiderProjects\CLR\CLR\bin\Debug\Newtonsoft.Json.dll
 C:\Users\data\RiderProjects\CLR\CLR\bin\Debug\Newtonsoft.Json.xml
 C:\Users\data\RiderProjects\CLR\CLR\obj\Debug\CLR.csproj.CopyComplete
+C:\Users\thang\RiderProjects\CLR\CLR\bin\Debug\CLR.dll
+C:\Users\thang\RiderProjects\CLR\CLR\bin\Debug\CLR.pdb
+C:\Users\thang\RiderProjects\CLR\CLR\bin\Debug\Newtonsoft.Json.dll
+C:\Users\thang\RiderProjects\CLR\CLR\bin\Debug\Newtonsoft.Json.xml
+C:\Users\thang\RiderProjects\CLR\CLR\obj\Debug\CLR.csprojAssemblyReference.cache
+C:\Users\thang\RiderProjects\CLR\CLR\obj\Debug\CLR.csproj.CoreCompileInputs.cache
+C:\Users\thang\RiderProjects\CLR\CLR\obj\Debug\CLR.csproj.CopyComplete
+C:\Users\thang\RiderProjects\CLR\CLR\obj\Debug\CLR.dll
+C:\Users\thang\RiderProjects\CLR\CLR\obj\Debug\CLR.pdb

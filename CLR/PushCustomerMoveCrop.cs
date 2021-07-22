@@ -10,6 +10,7 @@ public class PushCustomerMoveCrop
 {
     private const String rootURL = "https://api.movecrop.com/v1/";
 
+    // tooken
     private const String accessToken =
         "NzU0ODI4NmNmYzEwOGVkODA5Y2M2ODdhZWE5MGE3ZGY6NDA5NjhmOGZjNWMyZWM2ZGQxYjMwOTRiMGRhNzVhOTQ=";
 
@@ -17,7 +18,6 @@ public class PushCustomerMoveCrop
     public static void createOrder(String code, String phone, String address, String name, String invoice,
         String station, String router, out SqlString text)
     {
-       
         // ssl2
         ServicePointManager.Expect100Continue = true;
         ServicePointManager.SecurityProtocol = (SecurityProtocolType) (0xc0 | 0x300 | 0xc00);
@@ -30,21 +30,29 @@ public class PushCustomerMoveCrop
         httpWebRequest.Method = "POST";
 
         // use stream write
-        using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
+        try
         {
-            string json = GetBodyOrder(code, phone, address, name, invoice, station,router);
-            streamWriter.Write(json);
-        }
+            using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
+            {
+                string json = GetBodyOrder(code, phone, address, name, invoice, station, router);
+                streamWriter.Write(json);
+            }
 
-        var httpResponse = (HttpWebResponse) httpWebRequest.GetResponse();
+            var httpResponse = (HttpWebResponse) httpWebRequest.GetResponse();
+            {
+                text = (httpResponse.StatusCode == HttpStatusCode.Created) ? "OK" : "ERROR";
+            }
+        }
+        catch (Exception e)
         {
-            text = (httpResponse.StatusCode == HttpStatusCode.Created) ? "OK" : "ERROR";
+            Console.Out.WriteLine(e.ToString());
+            text = "URL ERROR";
         }
     }
 
 
     private static String GetBodyOrder(String code, String phone, String address, String name, String invoice,
-        String station,String router)
+        String station, String router)
     {
         // get today
         DateTime today = DateTime.Today;
@@ -85,7 +93,7 @@ public class PushCustomerMoveCrop
                "\"shipping_type\":0," +
                "\"product_type\":1," +
                "\"price_final\":\"\"," +
-               "\"route_id\":\""+router.Trim()+"\"," +
+               "\"route_id\":\"" + router.Trim() + "\"," +
                "\"status\":1," +
                "\"file_id_list\":[]," +
                "\"files\":[]," +
@@ -116,8 +124,8 @@ public class PushCustomerMoveCrop
         MyDic3.Add("shipper04@gmail.com", 21306);
         MyDic3.Add("shipper03@gmail.com", 21305);
         MyDic3.Add("shipper02@gmail.com", 21304);
-        
-        if (!MyDic3.ContainsKey(email.Trim())) text="Email not exists";
+
+        if (!MyDic3.ContainsKey(email.Trim())) text = "Email not exists";
         // ssl2
         ServicePointManager.Expect100Continue = true;
         ServicePointManager.SecurityProtocol = (SecurityProtocolType) (0xc0 | 0x300 | 0xc00);
@@ -129,27 +137,35 @@ public class PushCustomerMoveCrop
         // add method
         httpWebRequest.Method = "POST";
         // use stream write
-        using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
+        try
         {
-            string json = GetBodyRouter(MyDic3[email.Trim()]);
-            streamWriter.Write(json);
-        }
-        
-        var response = (HttpWebResponse) httpWebRequest.GetResponse();
-        
-        if (response.StatusCode == HttpStatusCode.Created)
-        {
-            using (StreamReader streamReader = new StreamReader(response.GetResponseStream()))
+            using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
             {
-                string res = streamReader.ReadToEnd();
-                int from = res.IndexOf("\"id\":")+5;
-                int to = res.IndexOf(",\"",from);
-                text = res.Substring(from,to-from);
+                string json = GetBodyRouter(MyDic3[email.Trim()]);
+                streamWriter.Write(json);
+            }
+
+            var response = (HttpWebResponse) httpWebRequest.GetResponse();
+
+            if (response.StatusCode == HttpStatusCode.Created)
+            {
+                using (StreamReader streamReader = new StreamReader(response.GetResponseStream()))
+                {
+                    string res = streamReader.ReadToEnd();
+                    int from = res.IndexOf("\"id\":") + 5;
+                    int to = res.IndexOf(",\"", from);
+                    text = res.Substring(from, to - from);
+                }
+            }
+            else
+            {
+                text = "ERROR";
             }
         }
-        else
+        catch (Exception e)
         {
-            text = "ERROR";
+            Console.Out.WriteLine(e.ToString());
+            text = "Request Error";
         }
     }
 
